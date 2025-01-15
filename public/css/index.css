@@ -1,3 +1,43 @@
 .hero-section {
     background-image: url("../images/todd-quackenbush-XBxQZLNBM0Q-unsplash.jpg");
 }
+
+.intro-section {
+    background-image: url("../images/hu-chen-60XLoOgwkfA-unsplash.jpg");
+}
+
+.contact-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(max(250px, calc(100%/2 - 20px)), 1fr));
+    width: 100%;
+    gap: 20px;
+}
+
+.contact-form > input,
+.contact-form > textarea,
+.contact-form > button {
+    border-radius: 30px;
+    padding: 20px 25px;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.contact-form > textarea,
+.contact-form > button {
+    grid-column: 1 / -1;
+}
+
+.contact-form > button {
+    background-color: white;
+    color: black;
+}
+
+.contact-form > input:focus::placeholder,
+.contact-form > textarea:focus::placeholder {
+    color: var(--color);
+}
+
+.contact-form > button:hover,
+.contact-form > button:focus {
+    background-color: white;
+    color: var(--color);
+}

@@ -1,83 +1,95 @@
 import { createServer } from 'node:http';
-import { readFile, createReadStream } from 'node:fs';
+import { createReadStream } from 'node:fs';
 import { join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Obtener el directorio actual (equivalente a __dirname)
+// Obtener el directorio actual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
 
 const host = '127.0.0.1';
 const port = 3000;
 
-const server = createServer((request, response) => {
-    const url = request.url;
+// Diccionario de tipos MIME
+const mimeTypes = {
+    '.html': 'text/html',
+    '.css': 'text/css',
+    '.js': 'application/javascript',
+    '.jpg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.ico': 'image/x-icon',
+    '.json': 'application/json',
+    '.txt': 'text/plain',
+    '.svg': 'image/svg+xml'
+};
 
-    // Si la solicitud es para la página principal (index.html)
-    if (url === '/') {
-        const filePath = join(__dirname, 'index.html');
-        readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                response.writeHead(500, { 'Content-Type': 'text/plain' });
-                response.end('Error al leer el archivo');
-            } else {
-                response.writeHead(200, { 'Content-Type': 'text/html' });
-                response.end(data);
+const server = createServer((request, response) => {
+    const url = request.url === '/' ? '/index.html' : request.url; // Redirigir '/' a 'index.html'
+    const filePath = join(__dirname, url);
+    const ext = extname(filePath); // Obtener la extensión del archivo
+    const mimeType = mimeTypes[ext] || 'application/octet-stream'; // Tipo MIME por defecto
+
+    // Leer y enviar el archivo solicitado
+    createReadStream(filePath)
+        .on('error', () => {
+            // Enviamos la respuesta solo si no se ha enviado antes
+            if (!response.headersSent) {
+                response.writeHead(404, { 'Content-Type': 'text/plain' });
+                response.end('Archivo no encontrado');
             }
+        })
+        .on('open', () => {
+            response.writeHead(200, { 'Content-Type': mimeType });
+        })
+        .pipe(response);
+    
+    if (request.method === 'POST' && url === '/submit') {
+        let body = '';
+    
+        // Recoger los datos del formulario en partes
+        request.on('data', chunk => {
+            body += chunk;
         });
-    }
-    // Si la solicitud es para un archivo HTML
-    else if (url.endsWith('.html')) {
-        const filePath = join(__dirname, url);
-        //response.writeHead(200, { 'Content-Type': 'text/html' });
-        createReadStream(filePath)
-            .on('error', () => {
-                response.writeHead(404, { 'Content-Type': 'text/plain' });
-                response.end('Archivo HTML no encontrado');
-            })
-            .pipe(response);
-    }
-    // Si la solicitud es para un archivo CSS
-    else if (url.endsWith('.css')) {
-        const filePath = join(__dirname, url);
-        //response.writeHead(200, { 'Content-Type': 'text/css' });
-        createReadStream(filePath)
-            .on('error', () => {
-                response.writeHead(404, { 'Content-Type': 'text/plain' });
-                response.end('Archivo CSS no encontrado');
-            })
-            .pipe(response);
-    }
-    // Si la solicitud es para un archivo JS
-    else if (url.endsWith('.js')) {
-        const filePath = join(__dirname, url);
-        //response.writeHead(200, { 'Content-Type': 'application/javascript' });
-        createReadStream(filePath)
-            .on('error', () => {
-                response.writeHead(404, { 'Content-Type': 'text/plain' });
-                response.end('Archivo JS no encontrado');
-            })
-            .pipe(response);
-    }
-    // Si la solicitud es para un archivo JPG
-    else if (url.endsWith('.jpg')) {
-        const filePath = join(__dirname, url);
-        //response.writeHead(200, { 'Content-Type': 'text/jpg' });
-        createReadStream(filePath)
-            .on('error', () => {
-                response.writeHead(404, { 'Content-Type': 'text/plain' });
-                response.end('Archivo JS no encontrado');
-            })
-            .pipe(response);
-    }
-    // Otras rutas (como imágenes, etc.) pueden ser manejadas aquí
-    else {
-        response.writeHead(404, { 'Content-Type': 'text/plain' });
-        response.end('Página no encontrada');
+    
+        // Procesar los datos cuando se hayan recibido todos
+        request.on('end', () => {
+            // Convertir los datos a un objeto
+            const formData = new URLSearchParams(body);
+    
+            // Crear un objeto con los valores enviados
+            const data = {
+                name: formData.get('name'),
+                surname: formData.get('surname'),
+                mail: formData.get('mail'),
+                phone: formData.get('phone'),
+                message: formData.get('message'),
+            };
+
+            // Validación de datos
+            if (!data.name || !data.surname || !data.mail || !data.phone) {
+                response.writeHead(400, { 'Content-Type': 'application/json' });
+                response.end(JSON.stringify({ mensaje: 'Por favor, completa todos los campos obligatorios' }));
+                return;
+            }
+            
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.mail)) {
+                response.writeHead(400, { 'Content-Type': 'application/json' });
+                response.end(JSON.stringify({ mensaje: 'El correo electrónico no es válido' }));
+                return;
+            }
+    
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({
+                mensaje: 'Formulario recibido correctamente',
+                datos: data
+            }));
+        });
+        return;
     }
 });
 
 // Iniciar el servidor
 server.listen(port, host, () => {
-    console.log(`Server running at http://${host}:${port}/`);
+    console.log(`Servidor ejecutándose en http://${host}:${port}/`);
 });
