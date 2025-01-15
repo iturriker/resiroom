@@ -1,0 +1,13 @@
+{
+  "name": "alquiler-habitaciones",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Iker Karkokli",
+  "license": "ISC",
+  "description": "Proyecto de prueba de Node.js"
+}
