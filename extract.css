@@ -1,0 +1,30 @@
+table {
+    border: 1px solid rgb(222, 222, 223);
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    text-align: left;
+}
+
+caption {
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 700;
+    caption-side: top;
+    background-color: rgb(236, 239, 241);
+    padding: 5px 10px;
+}
+
+th {
+    text-transform: uppercase;
+    border: 1px solid rgb(222, 222, 223);
+    background-color: rgb(236, 239, 241);
+    padding: 5px 10px;
+}
+
+td {
+    border: 1px solid rgb(222, 222, 223);
+    padding: 5px 10px;
+}

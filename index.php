@@ -30,8 +30,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="public/css/common.css">
-        <link rel="stylesheet" type="text/css" href="public/css/index.css">
+        <link rel="stylesheet" type="text/css" href="common.css">
+        <link rel="stylesheet" type="text/css" href="index.css?t=<?php echo time(); ?>">
 	</head>
 
     <body>
@@ -43,8 +43,8 @@
             </h1>
             <div class="header-menu hidden">
                 <ul class="header-list">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="index.php">Inicio</a></li>
+                    <li><a href="extract.php">Extracto</a></li>
                 </ul>
                 <svg class="burger hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                     <line x1="10" y1="25" x2="90" y2="25"/>
@@ -61,17 +61,17 @@
             </section>
             <section class="intro-section backgrounded lat-pad-L long-pad-L">
                 <h2>Manda tu mensaje y únete al equipo</h2>
-                <form class="contact-form" action="/submit" method="post">
+                <form class="contact-form" action="insert.php" method="post"> <!--enviar el action a insert.php-->
                     <label class="visually-hidden" for="name">Nombre</label>
                     <input type="text" id="name" name="name" placeholder="Nombre" required>
 
                     <label class="visually-hidden" for="surname">Apellido</label>
                     <input type="text" id="surname" name="surname" placeholder="Apellido" required>
                     
-                    <label class="visually-hidden" for="mail">Correo Electrónico</label>
+                    <label class="visually-hidden" for="mail">Email</label>
                     <input type="email" id="mail" name="mail" placeholder="Email" required>
                     
-                    <label class="visually-hidden" for="phone">Contraseña</label>
+                    <label class="visually-hidden" for="phone">Teléfono</label>
                     <input type="tel" id="phone" name="phone" placeholder="Nº de teléfono" required>
 
                     <label class="visually-hidden" for="message">Mensaje</label>
@@ -99,6 +99,5 @@
         </footer>
 
         <script src="common.js" type="application/javascript"></script>
-        <script src="form-manager.js" type="application/javascript"></script>
 	</body>
 </html>

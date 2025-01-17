@@ -44,7 +44,7 @@ const server = createServer((request, response) => {
         })
         .pipe(response);
     
-    if (request.method === 'POST' && url === '/submit') {
+    if (request.method === 'POST' && url === '/submit') { //cambiar a index.html
         let body = '';
     
         // Recoger los datos del formulario en partes
