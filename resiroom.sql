@@ -41,9 +41,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `surname`, `mail`, `phone`, `message`) VALUES
-(3, 'rtu', 'ryu', 'ii@gmail.com', '555555555', 'ggg'),
-(4, 'name', 'surname', 'example@example.com', '1234567890', 'message'),
-(5, 'name', 'surname', 'example@example.com', '1234567890', 'message');
+(1, 'rtu', 'ryu', 'ii@gmail.com', '555555555', 'ggg'),
+(2, 'name', 'surname', 'example@example.com', '1234567890', 'message'),
+(3, 'name', 'surname', 'example@example.com', '1234567890', 'message');
 
 --
 -- Índices para tablas volcadas
@@ -63,7 +63,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
